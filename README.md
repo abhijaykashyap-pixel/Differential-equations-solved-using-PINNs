@@ -1,38 +1,172 @@
-# Differential Equations Solved Using PINNs
+# 🌉 Euler–Bernoulli Beam Solver Using Physics-Informed Neural Networks (PINNs)
 
-This repo contains implementations of Physics-Informed Neural Networks (PINNs) to solve differential equations without traditional numerical solvers — the network learns the solution by minimizing the PDE residual directly, using automatic differentiation instead of mesh-based methods.
+A Physics-Informed Neural Network (PINN) implementation in **PyTorch** for solving the **Euler–Bernoulli beam equation** under a uniformly distributed load (UDL). Unlike traditional numerical methods such as the Finite Element Method (FEM), this model learns the beam deflection by embedding the governing differential equation and boundary conditions directly into the neural network loss function using automatic differentiation.
 
-Four problems are solved here:
+---
 
-| Notebook | Equation | Type |
-|---|---|---|
-| `exponential.ipynb` | dy/dx = y | 1st order ODE |
-| `poisson.ipynb` | 1D Poisson's equation | 2nd order ODE (displacement in simply supported beams) |
-| `Heat equation.ipynb` | 1D Heat equation | PDE |
-| `PINN2.ipynb` (`pinn-euler-beam` branch) | Euler-Bernoulli beam equation, EI·y⁗ = q | 4th order ODE |
+## 📌 Overview
 
-## Euler-Bernoulli Beam (PINN2.ipynb)
+Physics-Informed Neural Networks (PINNs) combine deep learning with the underlying laws of physics by incorporating differential equations into the loss function. This allows the neural network to approximate the solution without requiring labeled simulation or experimental data.
 
-Solves the deflection of a simply supported beam under a uniform load using a fully-connected network (2 hidden layers, 64 units, Tanh activation), trained on:
-- **Physics loss** — PDE residual `d⁴y/dx⁴ - q/EI` evaluated at randomly sampled collocation points each epoch
-- **Boundary loss** — enforces `y = 0` and bending moment `M = -EI·y'' = 0` at both ends
+This project solves the **Euler–Bernoulli beam equation**
 
-**Validation:** predictions are checked against the closed-form analytical solution
-`y(x) = q/(24EI) · (x⁴ - 2Lx³ + L³x)`, giving a **relative L2 error of 0.77%** against ground truth — not just a low training loss, but a solution that matches the true physics.
+\[
+EI\frac{d^4y}{dx^4}=q
+\]
 
-## Setup
+for a **simply supported beam** subjected to a **uniformly distributed load**.
+
+---
+
+## 🚀 Features
+
+- Physics-Informed Neural Network implemented using **PyTorch**
+- Automatic differentiation for first- to fourth-order derivatives
+- Mesh-free solution without FEM or finite difference methods
+- Physics residual and boundary condition loss formulation
+- Random collocation point sampling during training
+- Visualization of:
+  - Training Loss
+  - Beam Deflection
+  - Bending Moment Diagram
+
+---
+
+## 🛠 Tech Stack
+
+- Python
+- PyTorch
+- NumPy
+- Matplotlib
+
+---
+
+## 🧠 Neural Network Architecture
+
+| Component | Configuration |
+|----------|---------------|
+| Input Layer | 1 neuron |
+| Hidden Layers | 2 |
+| Hidden Units | 64 neurons each |
+| Activation | Tanh |
+| Output Layer | 1 neuron |
+
+Training Details:
+
+- Optimizer: Adam
+- Learning Rate: `1e-5`
+- Epochs: `10,000`
+- Collocation Points: `100` sampled randomly every epoch
+
+---
+
+## 📖 Methodology
+
+The network is trained by minimizing the total loss
+
+\[
+\mathcal{L}=\mathcal{L}_{physics}+1000\times\mathcal{L}_{boundary}
+\]
+
+### Physics Loss
+
+The governing equation
+
+\[
+\frac{d^4y}{dx^4}-\frac{q}{EI}=0
+\]
+
+is enforced by computing the fourth derivative using automatic differentiation.
+
+### Boundary Loss
+
+For a simply supported beam,
+
+- \(y(0)=0\)
+- \(y(L)=0\)
+- \(y''(0)=0\)
+- \(y''(L)=0\)
+
+These constraints are incorporated directly into the loss function.
+
+---
+
+## 📊 Results
+
+The trained PINN successfully learns the beam deflection while satisfying both the governing differential equation and the boundary conditions.
+
+The notebook generates:
+
+- 📉 Loss vs Epochs
+- 📈 Beam Deflection Curve
+- 📈 Bending Moment Diagram
+
+The predicted beam deflection closely matches the analytical solution, achieving a **relative L2 error of approximately 0.77%**.
+
+---
+
+## 📂 Project Structure
+
+```
+.
+├── PINN2.ipynb
+├── README.md
+```
+
+---
+
+## ⚙️ Installation
+
+Clone the repository
+
+```bash
+git clone https://github.com/<your-username>/<repository-name>.git
+cd <repository-name>
+```
+
+Install the required libraries
 
 ```bash
 pip install torch numpy matplotlib
 ```
 
-Each notebook is self-contained — open in Jupyter and run top to bottom.
+Launch Jupyter Notebook
 
-## Background
+```bash
+jupyter notebook
+```
 
-PINNs (Raissi et al., 2019) embed the governing differential equation directly into the loss function via automatic differentiation, so the network is constrained to obey the physics rather than just fitting data points. This is mesh-free and works well for problems where you have the governing equation but limited or no labeled data — the tradeoff is training a network for each new configuration rather than a general-purpose numerical solver.
+Open **PINN2.ipynb** and run all cells.
 
-## Branches
+---
 
-- `main` — exponential, Poisson, and heat equation solvers
-- `pinn-euler-beam` — Euler-Bernoulli beam solver with analytical validation
+## 🔬 Future Improvements
+
+- Variable distributed loads
+- Cantilever and fixed beam boundary conditions
+- Beam vibration analysis
+- Adaptive collocation sampling
+- Comparison with FEM solvers
+- GPU acceleration
+
+---
+
+## 📚 References
+
+- M. Raissi, P. Perdikaris, G. Karniadakis, **Physics-Informed Neural Networks**, Journal of Computational Physics, 2019.
+- Euler–Bernoulli Beam Theory
+
+---
+
+## 👨‍💻 Author
+
+**Abhijay Kashyap**
+
+B.E. Civil Engineering  
+BITS Pilani Hyderabad Campus
+
+GitHub: *Add your GitHub profile link here*
+
+---
+
+⭐ If you found this project useful, consider starring the repository.
