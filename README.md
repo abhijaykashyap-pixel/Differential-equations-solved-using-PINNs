@@ -10,9 +10,7 @@ Physics-Informed Neural Networks (PINNs) combine deep learning with the underlyi
 
 This project solves the **Euler–Bernoulli beam equation**
 
-\[
-EI\frac{d^4y}{dx^4}=q
-\]
+EI d⁴y/dx⁴ = q
 
 for a **simply supported beam** subjected to a **uniformly distributed load**.
 
