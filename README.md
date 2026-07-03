@@ -165,7 +165,7 @@ Open **PINN2.ipynb** and run all cells.
 B.E. Civil Engineering  
 BITS Pilani Hyderabad Campus
 
-GitHub: *Add your GitHub profile link here*
+GitHub: https://github.com/abhijaykashyap-pixel
 
 ---
 
