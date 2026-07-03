@@ -62,17 +62,13 @@ Training Details:
 
 The network is trained by minimizing the total loss
 
-\[
-\mathcal{L}=\mathcal{L}_{physics}+1000\times\mathcal{L}_{boundary}
-\]
+Loss = Physics Loss + 1000 × Boundary Loss
 
 ### Physics Loss
 
 The governing equation
 
-\[
-\frac{d^4y}{dx^4}-\frac{q}{EI}=0
-\]
+d⁴y/dx⁴ − q/(EI) = 0
 
 is enforced by computing the fourth derivative using automatic differentiation.
 
